@@ -1,34 +1,45 @@
 import 'package:flutter_test/flutter_test.dart';
+import 'package:get/get.dart';
+
+class Controller extends GetxController {
+  @override
+  void onInit() {
+    super.onInit();
+    //Change value to name2
+    name.value = 'name2';
+  }
+
+  @override
+  void onClose() {
+    name.value = '';
+    super.onClose();
+  }
+
+  final name = 'name1'.obs;
+
+  void changeName() => name.value = 'name3';
+}
 
 void main() {
-  setUp(() {
-    print("im here");
-  });
+  test('deniyoruz işte', () {
+    /// You can test the controller without the lifecycle,
+    /// but it's not recommended unless you're not using
+    ///  GetX dependency injection
+    final controller = Controller();
+    expect(controller.name.value, 'name1');
 
-  test('user login fail test', () {
-    const isUserLogin = true;
+    /// If you are using it, you can test everything,
+    /// including the state of the application after each lifecycle.
+    Get.put(controller); // onInit was called
+    expect(controller.name.value, 'name2');
 
-    expect(isUserLogin, isTrue);
-  });
+    /// Test your functions
+    controller.changeName();
+    expect(controller.name.value, 'name3');
 
-  group('User login full test', () {
-    //test 1
-    test('user login fail test', () {
-      const isUserLogin = true;
+    /// onClose was called
+    Get.delete<Controller>();
 
-      expect(isUserLogin, isTrue);
-    });
-    //test 2
-    test('user login fail test', () {
-      const isUserLogin = true;
-
-      expect(isUserLogin, isTrue);
-    });
-    //test 3
-    test('user login fail test', () {
-      const isUserLogin = true;
-
-      expect(isUserLogin, isTrue);
-    });
+    expect(controller.name.value, '');
   });
 }

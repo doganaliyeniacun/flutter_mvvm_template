@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 class BaseViewStateless<T> extends StatelessWidget {
   final Widget Function(BuildContext buildContext, T value) onPageBuilder;

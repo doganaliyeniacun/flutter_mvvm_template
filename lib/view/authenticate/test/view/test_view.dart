@@ -4,8 +4,8 @@ import 'package:get/get.dart';
 
 import '../viewmodel/test_viewmodel.dart';
 
-class Home extends StatelessWidget {
-  final viewModel = Get.put(TestViewModel());
+class TestView extends GetView<TestViewModel> {
+  
 
   @override
   Widget build(BuildContext context) {
@@ -13,18 +13,21 @@ class Home extends StatelessWidget {
   }
 
   Scaffold get body => Scaffold(
-        body: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Obx(
-                () => Text(viewModel.value.toString()),
-              ),
-              ElevatedButton(
-                  onPressed: () => viewModel.incrementValue(),
-                  child: const Text('Increment Value')),
-            ],
+        body: controller.obx(
+          (state) => Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Obx(
+                  () => Text(controller.value.toString()),
+                ),
+                ElevatedButton(
+                    onPressed: () => controller.incrementValue(),
+                    child: const Text('Increment Value')),
+              ],
+            ),
           ),
+          onLoading: const LinearProgressIndicator(),
         ),
       );
 }
